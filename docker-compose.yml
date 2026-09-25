@@ -6,7 +6,7 @@ services:
     container_name: date-site
     restart: unless-stopped
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:4090:3000"
     volumes:
       - ./date_site.db:/app/date_site.db
     environment:
