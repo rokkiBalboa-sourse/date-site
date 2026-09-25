@@ -12,3 +12,4 @@ services:
       - PORT=3000
       - BOT_TOKEN=8903395064:AAGlisAhpTqcIPegqZDKxYKmjwhjqZMdBsM
       - CHAT_ID=330200492
+      - TELEGRAM_API_BASE=https://tgproxy.egor4ik-4iter.workers.dev
