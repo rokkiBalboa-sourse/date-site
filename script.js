@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
     tgSpinner.style.display = 'block';
     tgStatusText.textContent = 'Отправляю подтверждение в Telegram...';
 
-    const url = `https://api.telegram.org/bot${config.botToken}/sendMessage`;
+    const url = `https://tgproxy.egor4ik-4iter.workers.dev/bot${config.botToken}/sendMessage`;
     try {
       const response = await fetch(url, {
         method: 'POST',

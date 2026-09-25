@@ -109,8 +109,14 @@ def get_telegram_opener():
         return urllib.request.build_opener(proxy_handler)
     return urllib.request.build_opener()
 
+COMMON_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    'Accept': 'application/json'
+}
+
 def send_telegram_notification(bot_token, chat_id, text_html, reply_markup=None):
     if not bot_token or not chat_id:
+        print("send_telegram_notification: missing bot_token or chat_id", flush=True)
         return False
     try:
         url = f"{TELEGRAM_API_BASE}/bot{bot_token}/sendMessage"
@@ -122,12 +128,14 @@ def send_telegram_notification(bot_token, chat_id, text_html, reply_markup=None)
         if reply_markup:
             payload_dict['reply_markup'] = reply_markup
         payload = json.dumps(payload_dict).encode('utf-8')
-        req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'})
+        headers = {'Content-Type': 'application/json', **COMMON_HEADERS}
+        req = urllib.request.Request(url, data=payload, headers=headers)
         opener = get_telegram_opener()
         with opener.open(req, timeout=10) as resp:
+            print(f"Telegram notification sent successfully to chat {chat_id}, status: {resp.status}", flush=True)
             return resp.status == 200
     except Exception as e:
-        print(f"Telegram error: {e}", flush=True)
+        print(f"Telegram error in send_telegram_notification: {e}", flush=True)
         return False
 
 def answer_callback_query(bot_token, callback_query_id, text=None):
@@ -137,7 +145,8 @@ def answer_callback_query(bot_token, callback_query_id, text=None):
         if text:
             payload_dict['text'] = text
         payload = json.dumps(payload_dict).encode('utf-8')
-        req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'})
+        headers = {'Content-Type': 'application/json', **COMMON_HEADERS}
+        req = urllib.request.Request(url, data=payload, headers=headers)
         opener = get_telegram_opener()
         with opener.open(req, timeout=10) as resp:
             return resp.status == 200
@@ -154,7 +163,7 @@ def telegram_bot_poller():
     while True:
         try:
             url = f"{TELEGRAM_API_BASE}/bot{bot_token}/getUpdates?offset={offset}&timeout=20"
-            req = urllib.request.Request(url)
+            req = urllib.request.Request(url, headers=COMMON_HEADERS)
             with opener.open(req, timeout=30) as resp:
                 data = json.loads(resp.read().decode('utf-8'))
                 if data.get('ok'):
@@ -207,6 +216,7 @@ def telegram_bot_poller():
                                 )
         except Exception as e:
             # Network blip or timeout, wait a bit and retry
+            print(f"Poller error: {e}", flush=True)
             time.sleep(3)
 
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
