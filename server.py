@@ -14,6 +14,9 @@ DEFAULT_BOT_TOKEN = os.environ.get('BOT_TOKEN', "8903395064:AAGlisAhpTqcIPegqZDK
 DEFAULT_CHAT_ID = os.environ.get('CHAT_ID', "330200492")
 
 def init_db():
+    db_dir = os.path.dirname(os.path.abspath(DB_FILE))
+    if db_dir:
+        os.makedirs(db_dir, exist_ok=True)
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
     cursor.execute('''

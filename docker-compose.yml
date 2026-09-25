@@ -6,10 +6,11 @@ services:
     ports:
       - "127.0.0.1:4090:3000"
     volumes:
-      - ./date_site.db:/app/date_site.db
+      - ./data:/app/data
     environment:
       - PYTHONUNBUFFERED=1
       - PORT=3000
+      - DB_FILE=/app/data/date_site.db
       - BOT_TOKEN=8903395064:AAGlisAhpTqcIPegqZDKxYKmjwhjqZMdBsM
       - CHAT_ID=330200492
       - TELEGRAM_API_BASE=https://tgproxy.egor4ik-4iter.workers.dev
