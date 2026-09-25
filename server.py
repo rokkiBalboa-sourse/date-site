@@ -91,11 +91,26 @@ import html
 import threading
 import time
 
+TELEGRAM_API_BASE = os.environ.get('TELEGRAM_API_BASE', 'https://api.telegram.org').rstrip('/')
+
+def get_telegram_opener():
+    proxy = (
+        os.environ.get('TELEGRAM_PROXY') or
+        os.environ.get('HTTPS_PROXY') or
+        os.environ.get('https_proxy') or
+        os.environ.get('HTTP_PROXY') or
+        os.environ.get('http_proxy')
+    )
+    if proxy:
+        proxy_handler = urllib.request.ProxyHandler({'http': proxy, 'https': proxy})
+        return urllib.request.build_opener(proxy_handler)
+    return urllib.request.build_opener()
+
 def send_telegram_notification(bot_token, chat_id, text_html, reply_markup=None):
     if not bot_token or not chat_id:
         return False
     try:
-        url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+        url = f"{TELEGRAM_API_BASE}/bot{bot_token}/sendMessage"
         payload_dict = {
             'chat_id': chat_id,
             'text': text_html,
@@ -105,36 +120,39 @@ def send_telegram_notification(bot_token, chat_id, text_html, reply_markup=None)
             payload_dict['reply_markup'] = reply_markup
         payload = json.dumps(payload_dict).encode('utf-8')
         req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'})
-        with urllib.request.urlopen(req, timeout=10) as resp:
+        opener = get_telegram_opener()
+        with opener.open(req, timeout=10) as resp:
             return resp.status == 200
     except Exception as e:
-        print(f"Telegram error: {e}")
+        print(f"Telegram error: {e}", flush=True)
         return False
 
 def answer_callback_query(bot_token, callback_query_id, text=None):
     try:
-        url = f"https://api.telegram.org/bot{bot_token}/answerCallbackQuery"
+        url = f"{TELEGRAM_API_BASE}/bot{bot_token}/answerCallbackQuery"
         payload_dict = {'callback_query_id': callback_query_id}
         if text:
             payload_dict['text'] = text
         payload = json.dumps(payload_dict).encode('utf-8')
         req = urllib.request.Request(url, data=payload, headers={'Content-Type': 'application/json'})
-        with urllib.request.urlopen(req, timeout=10) as resp:
+        opener = get_telegram_opener()
+        with opener.open(req, timeout=10) as resp:
             return resp.status == 200
     except Exception as e:
-        print(f"answerCallbackQuery error: {e}")
+        print(f"answerCallbackQuery error: {e}", flush=True)
         return False
 
 def telegram_bot_poller():
     """Background worker that listens for inline button clicks and commands."""
     offset = 0
     bot_token = DEFAULT_BOT_TOKEN
-    print("Telegram bot poller started.")
+    print(f"Telegram bot poller started using {TELEGRAM_API_BASE}.", flush=True)
+    opener = get_telegram_opener()
     while True:
         try:
-            url = f"https://api.telegram.org/bot{bot_token}/getUpdates?offset={offset}&timeout=20"
+            url = f"{TELEGRAM_API_BASE}/bot{bot_token}/getUpdates?offset={offset}&timeout=20"
             req = urllib.request.Request(url)
-            with urllib.request.urlopen(req, timeout=30) as resp:
+            with opener.open(req, timeout=30) as resp:
                 data = json.loads(resp.read().decode('utf-8'))
                 if data.get('ok'):
                     for update in data.get('result', []):
