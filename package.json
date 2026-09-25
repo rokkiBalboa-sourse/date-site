@@ -1,0 +1,13 @@
+{
+  "name": "date-site",
+  "version": "1.0.0",
+  "description": "Приглашение на свидание для Кристины (с базой данных SQLite)",
+  "scripts": {
+    "dev": "lsof -ti:3000 | xargs kill -9 2>/dev/null || true; python3 server.py",
+    "start": "lsof -ti:3000 | xargs kill -9 2>/dev/null || true; python3 server.py",
+    "restart": "lsof -ti:3000 | xargs kill -9 2>/dev/null || true; python3 server.py"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

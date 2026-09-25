@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Приглашение для Кристины ✨</title>
+  <meta name="description" content="Особенное приглашение на свидание для Кристины">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Ambient magical background lights -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Floating background hearts container -->
+  <div id="hearts-container" class="hearts-container" aria-hidden="true"></div>
+
+  <main class="app-container">
+    <!-- ==============================================
+         SCREEN 1: The Question (Staged Sequential Reveal)
+         ============================================== -->
+    <section id="screen-invite" class="card active">
+      <!-- Stage 1: Badge & Sticker (first.webm) -->
+      <div id="stage-1" class="fade-stage revealed">
+        <div class="badge">
+          <span class="sparkle">✨</span> Для самой лучшей девушки на свете
+        </div>
+
+        <div class="sticker-wrapper">
+          <video class="sticker-video" src="first.webm" autoplay loop muted playsinline></video>
+        </div>
+      </div>
+
+      <!-- Stage 2: Greeting & Subtitle (appears after 5s) -->
+      <div id="stage-2" class="fade-stage">
+        <h1 class="title">
+          Привет, <span class="highlight-name">Кристина</span>!
+        </h1>
+        <p class="subtitle">
+          У меня к тебе есть один очень важный и трепетный вопрос...
+        </p>
+      </div>
+
+      <!-- Stage 3: Question Box & Buttons (appear together) -->
+      <div id="stage-3" class="fade-stage">
+        <div class="question-box">
+          <p class="big-question">Пойдёшь со мной на свидание?</p>
+        </div>
+
+        <div class="buttons-container" id="invite-btn-group">
+          <button id="btn-yes" class="btn btn-primary" type="button">
+            <span class="btn-text">Да, с радостью! 🥰</span>
+          </button>
+          <button id="btn-no" class="btn btn-secondary" type="button">
+            <span class="btn-text">Нет 🙈</span>
+          </button>
+        </div>
+        <p id="tease-text" class="tease-text"></p>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 2: Date Planner Wizard
+         ============================================== -->
+    <section id="screen-planner" class="card">
+      <div class="steps-indicator" id="steps-indicator">
+        <span class="step-dot active" data-step="1">1</span>
+        <span class="step-line"></span>
+        <span class="step-dot" data-step="2">2</span>
+        <span class="step-line"></span>
+        <span class="step-dot" data-step="3">3</span>
+      </div>
+
+      <!-- Step 1: Activity -->
+      <div class="wizard-step active" id="wizard-step-1">
+        <div class="step-header">
+          <div class="sticker-wrapper">
+            <video class="sticker-video" src="second.webm" autoplay loop muted playsinline></video>
+          </div>
+          <span class="step-tag">Шаг 1 из 3</span>
+          <h2 class="step-title">Что мы будем делать? ✨</h2>
+          <p class="step-desc">Выбери, как ты представляешь наш идеальный вечер:</p>
+        </div>
+
+        <div class="options-grid" id="activity-options">
+          <label class="option-card">
+            <input type="radio" name="activity" value="Романтичный ужин" checked>
+            <div class="card-content">
+              <span class="card-icon">🍷</span>
+              <div class="card-text">
+                <strong>Романтичный ужин</strong>
+                <span>Приглушенный свет, вкусная еда и приятные разговоры</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="activity" value="Хоррор-квест">
+            <div class="card-content">
+              <span class="card-icon">👻</span>
+              <div class="card-text">
+                <strong>Хоррор-квест</strong>
+                <span>Пощекочем нервишки и выберемся вместе</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="activity" value="Домашняя посиделка">
+            <div class="card-content">
+              <span class="card-icon">🛋️</span>
+              <div class="card-text">
+                <strong>Домашняя посиделка</strong>
+                <span>Плед, кино, вкусняшки и душевные разговоры</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="activity" value="Кинотеатр или домашний кинозал">
+            <div class="card-content">
+              <span class="card-icon">🎬</span>
+              <div class="card-text">
+                <strong>Кино и попкорн</strong>
+                <span>Хороший фильм на последних рядах или дома</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="activity" value="Творческий мастер-класс">
+            <div class="card-content">
+              <span class="card-icon">🎨</span>
+              <div class="card-text">
+                <strong>Творческий мастер-класс</strong>
+                <span>Гончарное дело, живопись или выставка</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="activity" value="Полный сюрприз">
+            <div class="card-content">
+              <span class="card-icon">🎁</span>
+              <div class="card-text">
+                <strong>Полный сюрприз</strong>
+                <span>Ты просто одеваешься красиво, а план за мной</span>
+              </div>
+            </div>
+          </label>
+
+          <!-- Выплывающая плашка внутри Шага 1 при выборе сюрприза -->
+          <div id="surprise-food-banner" class="surprise-food-banner" style="display: none;">
+            <p class="surprise-food-question">Хочешь ли ты выбрать что-то покушать или это тоже будет для тебя
+              сюрпризом?</p>
+            <div class="surprise-food-buttons">
+              <button id="btn-surprise-food-no" class="btn btn-sm btn-primary" type="button">
+                Пусть тоже будет сюрпризом! 🎁
+              </button>
+              <button id="btn-surprise-food-yes" class="btn btn-sm btn-outline" type="button">
+                Хочу выбрать сама 😋
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="wizard-nav">
+          <div></div>
+          <button class="btn btn-primary" id="btn-next-1" type="button">
+            Дальше ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Food & Drinks -->
+      <div class="wizard-step" id="wizard-step-2">
+        <div class="step-header">
+          <div class="sticker-wrapper">
+            <video class="sticker-video" src="catseats.webm" autoplay loop muted playsinline></video>
+          </div>
+          <span class="step-tag">Шаг 2 из 3</span>
+          <h2 class="step-title">Что покушаем? 🍓</h2>
+          <p class="step-desc">Какое настроение по вкусностям у тебя сегодня?</p>
+        </div>
+
+        <div id="step2-surprise-notice" class="surprise-notice" style="display: none;">
+          ✨ Ты выбрала сюрприз! Можешь выбрать вкусняшки сама или доверить этот выбор мне.
+        </div>
+
+        <div class="options-grid" id="food-options">
+          <label class="option-card">
+            <input type="radio" name="food" value="Итальянская паста и пицца" checked>
+            <div class="card-content">
+              <span class="card-icon">🍝</span>
+              <div class="card-text">
+                <strong>Итальянская кухня</strong>
+                <span>Паста, пицца с хрустящей корочкой и вино</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="food" value="Суши, роллы и азиатская кухня">
+            <div class="card-content">
+              <span class="card-icon">🍣</span>
+              <div class="card-text">
+                <strong>Суши и Азия</strong>
+                <span>Свежие роллы, том-ям или рамен</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="food" value="Бургер Кинг">
+            <div class="card-content">
+              <span class="card-icon">👑</span>
+              <div class="card-text">
+                <strong>Бургер Кинг</strong>
+                <span>Вопперы, сырные медальоны и картошечка</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="food" value="Кофе и изысканные десерты">
+            <div class="card-content">
+              <span class="card-icon">🍰</span>
+              <div class="card-text">
+                <strong>Десерты и кофе</strong>
+                <span>Красивая кондитерская и много сладкого</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="food" value="Сочные бургеры или стейки">
+            <div class="card-content">
+              <span class="card-icon">🥩</span>
+              <div class="card-text">
+                <strong>Стейки или бургеры</strong>
+                <span>Сытно, сочно и без лишних церемоний</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card" id="food-option-custom">
+            <input type="radio" name="food" value="На твой выбор / Что-то новенькое">
+            <div class="card-content">
+              <span class="card-icon">✨</span>
+              <div class="card-text">
+                <strong>На твой вкус</strong>
+                <span>Удиви меня чем-нибудь необычным</span>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <div class="wizard-nav">
+          <button class="btn btn-outline" id="btn-prev-2" type="button">
+            Назад
+          </button>
+          <button class="btn btn-primary" id="btn-next-2" type="button">
+            Дальше ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Date, Time & Wishes -->
+      <div class="wizard-step" id="wizard-step-3">
+        <div class="step-header">
+          <div class="sticker-wrapper">
+            <video class="sticker-video" src="date.webm" autoplay loop muted playsinline></video>
+          </div>
+          <span class="step-tag">Шаг 3 из 3</span>
+          <h2 class="step-title">Когда тебе удобно? 🗓️</h2>
+          <p class="step-desc">Выбери день и время или напиши свой вариант:</p>
+        </div>
+
+        <div class="form-group">
+          <label class="input-label" for="date-select">Выбери день:</label>
+          <div class="quick-days" id="quick-days-container">
+            <!-- Dynamic days buttons generated via JS -->
+          </div>
+          <input type="date" id="date-select" class="custom-input" min="">
+        </div>
+
+        <div class="form-group">
+          <label class="input-label" for="time-select">Во сколько начнём?</label>
+          <input type="time" id="time-select" class="custom-input custom-time-input" value="19:00">
+        </div>
+
+        <div class="form-group">
+          <label class="input-label" for="notes-input">
+            Особое пожелание или секретный каприз? <span style="color: var(--pink-bright);">*</span>
+          </label>
+          <textarea id="notes-input" class="custom-textarea" rows="2" required
+            placeholder='Например: "Хочу клубнику в шоколаде" или "Забери меня на такси"'></textarea>
+          <div id="notes-error" class="input-hint-error">Пожалуйста, напиши своё пожелание или каприз 💭✨</div>
+        </div>
+
+        <div class="wizard-nav">
+          <button class="btn btn-outline" id="btn-prev-3" type="button">
+            Назад
+          </button>
+          <button class="btn btn-primary btn-glow" id="btn-submit-plan" type="button">
+            Я готова! 💌
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 3: Clean Romantic Ticket & Celebration
+         ============================================== -->
+    <section id="screen-result" class="card">
+      <div class="sticker-wrapper">
+        <video class="sticker-video" src="3.webm" autoplay loop muted playsinline></video>
+      </div>
+
+      <div class="celebration-badge">Ура! 🎉 Свиданию быть!</div>
+      <p class="result-subtitle">Я уже в предвкушении нашего вечера, солнышко <video class="inline-emoji-video" src="love.webm" autoplay loop muted playsinline></video></p>
+
+      <!-- Vertical Romantic Ticket (Single Complete Ticket) -->
+      <div class="date-ticket-vertical">
+        <!-- Scalloped Top Edge -->
+        <div class="ticket-scallops-top" aria-hidden="true"></div>
+
+        <div class="ticket-header">
+          <span class="ticket-number">№ 6969</span>
+        </div>
+
+        <div class="ticket-main-title">✨ БИЛЕТ НА СВИДАНИЕ ✨</div>
+
+        <div class="ticket-body">
+          <div class="ticket-row">
+            <span class="ticket-label">План:</span>
+            <span class="ticket-value" id="summary-activity">—</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Вкусняшки:</span>
+            <span class="ticket-value" id="summary-food">—</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Когда:</span>
+            <span class="ticket-value" id="summary-datetime">—</span>
+          </div>
+          <div class="ticket-row" id="summary-notes-row">
+            <span class="ticket-label">Пожелание:</span>
+            <span class="ticket-value" id="summary-notes">Твой член <video class="inline-emoji-video" src="fuck.webm" autoplay loop muted playsinline></video></span>
+          </div>
+        </div>
+
+        <!-- Perforation Line with Side Semicircle Notches -->
+        <div class="ticket-perforation-bar">
+          <div class="ticket-notch notch-left"></div>
+          <div class="ticket-dotted-line"></div>
+          <div class="ticket-notch notch-right"></div>
+        </div>
+
+        <!-- Bottom Part with Heart Emojis (Seamlessly connected) -->
+        <div class="ticket-bottom-part">
+          <div class="stub-hearts-row">
+            <span class="stub-heart pulse-1">💖</span>
+            <span class="stub-heart pulse-2">💜</span>
+            <span class="stub-heart pulse-3">✨</span>
+            <span class="stub-heart pulse-1">💖</span>
+            <span class="stub-heart pulse-2">💜</span>
+            <span class="stub-heart pulse-3">✨</span>
+            <span class="stub-heart pulse-1">💖</span>
+          </div>
+        </div>
+
+        <!-- Scalloped Bottom Edge -->
+        <div class="ticket-scallops-bottom" aria-hidden="true"></div>
+      </div>
+
+      <div class="telegram-status-box" id="tg-status-box">
+        <div class="sending-spinner" id="tg-spinner"></div>
+        <span id="tg-status-text">Отправка твоего ответа... 💌</span>
+      </div>
+
+
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

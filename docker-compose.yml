@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  date-site:
+    build: .
+    container_name: date-site
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ./date_site.db:/app/date_site.db
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PORT=3000
+      - BOT_TOKEN=8903395064:AAGlisAhpTqcIPegqZDKxYKmjwhjqZMdBsM
+      - CHAT_ID=330200492
