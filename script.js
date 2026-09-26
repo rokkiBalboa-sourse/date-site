@@ -367,6 +367,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  window.setWizardStep = setWizardStep;
+
   btnNext1.addEventListener('click', () => {
     if (isSurpriseSelected()) {
       if (foodSurpriseChoice === true) {
