@@ -83,6 +83,8 @@
         <span class="step-dot" data-step="2">2</span>
         <span class="step-line"></span>
         <span class="step-dot" data-step="3">3</span>
+        <span class="step-line"></span>
+        <span class="step-dot" data-step="4">4</span>
       </div>
 
       <!-- Step 1: Activity -->
@@ -91,7 +93,7 @@
           <div class="sticker-wrapper">
             <video class="sticker-video" src="second.webm" autoplay loop muted playsinline></video>
           </div>
-          <span class="step-tag">Шаг 1 из 3</span>
+          <span class="step-tag">Шаг 1 из 4</span>
           <h2 class="step-title">Что мы будем делать? ✨</h2>
           <p class="step-desc">Выбери, как ты представляешь наш идеальный вечер:</p>
         </div>
@@ -192,7 +194,7 @@
           <div class="sticker-wrapper">
             <video class="sticker-video" src="catseats.webm" autoplay loop muted playsinline></video>
           </div>
-          <span class="step-tag">Шаг 2 из 3</span>
+          <span class="step-tag">Шаг 2 из 4</span>
           <h2 class="step-title">Что покушаем? 🍓</h2>
           <p class="step-desc">Какое настроение по вкусностям у тебя сегодня?</p>
         </div>
@@ -279,13 +281,13 @@
         </div>
       </div>
 
-      <!-- Step 3: Date, Time & Wishes -->
+      <!-- Step 3: Date & Time -->
       <div class="wizard-step" id="wizard-step-3">
         <div class="step-header">
           <div class="sticker-wrapper">
             <video class="sticker-video" src="date.webm" autoplay loop muted playsinline></video>
           </div>
-          <span class="step-tag">Шаг 3 из 3</span>
+          <span class="step-tag">Шаг 3 из 4</span>
           <h2 class="step-title">Когда тебе удобно? 🗓️</h2>
           <p class="step-desc">Выбери день и время или напиши свой вариант:</p>
         </div>
@@ -303,17 +305,84 @@
           <input type="time" id="time-select" class="custom-input custom-time-input" value="19:00">
         </div>
 
-        <div class="form-group">
+        <div class="wizard-nav">
+          <button class="btn btn-outline" id="btn-prev-3" type="button">
+            Назад
+          </button>
+          <button class="btn btn-primary" id="btn-next-3" type="button">
+            Дальше ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 4: Meeting Place & Wishes -->
+      <div class="wizard-step" id="wizard-step-4">
+        <div class="step-header">
+          <div class="sticker-wrapper">
+            <video class="sticker-video" src="first.webm" autoplay loop muted playsinline></video>
+          </div>
+          <span class="step-tag">Шаг 4 из 4</span>
+          <h2 class="step-title">Где мы встретимся? 📍</h2>
+          <p class="step-desc">Выбери, как тебе будет удобнее и комфортнее:</p>
+        </div>
+
+        <div class="options-grid" id="meeting-options">
+          <label class="option-card">
+            <input type="radio" name="meeting" value="Заеду за тобой на такси / машине" checked>
+            <div class="card-content">
+              <span class="card-icon">🚕</span>
+              <div class="card-text">
+                <strong>Заеду за тобой</strong>
+                <span>Выходи к подъезду — встречу и довезу с комфортом</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="meeting" value="Встретимся в центре">
+            <div class="card-content">
+              <span class="card-icon">🏙️</span>
+              <div class="card-text">
+                <strong>Встретимся в центре</strong>
+                <span>В красивом и уютном месте, откуда начнем вечер</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="meeting" value="Сразу на месте свидания">
+            <div class="card-content">
+              <span class="card-icon">🥂</span>
+              <div class="card-text">
+                <strong>Сразу на месте</strong>
+                <span>Встретимся у входа в заведение к назначенному времени</span>
+              </div>
+            </div>
+          </label>
+
+          <label class="option-card">
+            <input type="radio" name="meeting" value="Решим ближе к делу / Свой вариант">
+            <div class="card-content">
+              <span class="card-icon">💬</span>
+              <div class="card-text">
+                <strong>Свой вариант / Решим позже</strong>
+                <span>Спишемся перед встречей или укажи адрес ниже</span>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-group" style="margin-top: 24px;">
           <label class="input-label" for="notes-input">
             Особое пожелание или секретный каприз? <span style="color: var(--pink-bright);">*</span>
           </label>
           <textarea id="notes-input" class="custom-textarea" rows="2" required
-            placeholder='Например: "Хочу клубнику в шоколаде" или "Забери меня на такси"'></textarea>
+            placeholder='Например: адрес подъезда, "Хочу клубнику в шоколаде" или любой каприз'></textarea>
           <div id="notes-error" class="input-hint-error">Пожалуйста, напиши своё пожелание или каприз 💭✨</div>
         </div>
 
         <div class="wizard-nav">
-          <button class="btn btn-outline" id="btn-prev-3" type="button">
+          <button class="btn btn-outline" id="btn-prev-4" type="button">
             Назад
           </button>
           <button class="btn btn-primary btn-glow" id="btn-submit-plan" type="button">
@@ -358,9 +427,13 @@
             <span class="ticket-label">Когда:</span>
             <span class="ticket-value" id="summary-datetime">—</span>
           </div>
+          <div class="ticket-row">
+            <span class="ticket-label">Встреча:</span>
+            <span class="ticket-value" id="summary-meeting">—</span>
+          </div>
           <div class="ticket-row" id="summary-notes-row">
             <span class="ticket-label">Пожелание:</span>
-            <span class="ticket-value" id="summary-notes">Твой член <video class="inline-emoji-video" src="fuck.webm" autoplay loop muted playsinline></video></span>
+            <span class="ticket-value" id="summary-notes">—</span>
           </div>
         </div>
 

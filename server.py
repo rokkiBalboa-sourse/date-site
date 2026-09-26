@@ -27,10 +27,15 @@ def init_db():
             datetime TEXT NOT NULL,
             raw_date TEXT,
             selected_time TEXT,
+            meeting TEXT,
             notes TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
+    try:
+        cursor.execute("ALTER TABLE date_response ADD COLUMN meeting TEXT")
+    except sqlite3.OperationalError:
+        pass
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS settings (
             key TEXT PRIMARY KEY,
@@ -52,6 +57,7 @@ def get_latest_response():
     row = cursor.fetchone()
     conn.close()
     if row:
+        row_keys = row.keys()
         return {
             'confirmed': True,
             'plan': {
@@ -60,6 +66,7 @@ def get_latest_response():
                 'datetime': row['datetime'],
                 'rawDate': row['raw_date'],
                 'selectedTime': row['selected_time'],
+                'meeting': row['meeting'] if 'meeting' in row_keys else '',
                 'notes': row['notes']
             },
             'createdAt': row['created_at']
@@ -70,14 +77,15 @@ def save_response(data):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute('''
-        INSERT INTO date_response (activity, food, datetime, raw_date, selected_time, notes)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO date_response (activity, food, datetime, raw_date, selected_time, meeting, notes)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     ''', (
         data.get('activity', ''),
         data.get('food', ''),
         data.get('datetime', ''),
         data.get('rawDate', ''),
         data.get('selectedTime', ''),
+        data.get('meeting', ''),
         data.get('notes', '')
     ))
     conn.commit()
@@ -254,6 +262,7 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
                     activity = data.get('activity', '')
                     food = data.get('food', '')
                     full_dt = data.get('datetime', '')
+                    meeting = data.get('meeting', '')
                     notes = data.get('notes', '')
                     msg = (
                         f"💌 <b>Кристина приняла приглашение на свидание!</b> 💜\n\n"
@@ -261,6 +270,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
                         f"🍓 <b>Вкусняшки:</b> {html.escape(str(food))}\n"
                         f"🗓️ <b>Когда:</b> {html.escape(str(full_dt))}\n"
                     )
+                    if meeting:
+                        msg += f"📍 <b>Где встретимся:</b> {html.escape(str(meeting))}\n"
                     if notes:
                         msg += f"💭 <b>Пожелание:</b> {html.escape(str(notes))}\n"
                     else:

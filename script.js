@@ -22,18 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const wizardStep1 = document.getElementById('wizard-step-1');
   const wizardStep2 = document.getElementById('wizard-step-2');
   const wizardStep3 = document.getElementById('wizard-step-3');
+  const wizardStep4 = document.getElementById('wizard-step-4');
   const stepDots = document.querySelectorAll('.step-dot');
 
   const btnNext1 = document.getElementById('btn-next-1');
   const btnNext2 = document.getElementById('btn-next-2');
+  const btnNext3 = document.getElementById('btn-next-3');
   const btnPrev2 = document.getElementById('btn-prev-2');
   const btnPrev3 = document.getElementById('btn-prev-3');
+  const btnPrev4 = document.getElementById('btn-prev-4');
   const btnSubmitPlan = document.getElementById('btn-submit-plan');
 
   // Ticket Summary
   const summaryActivity = document.getElementById('summary-activity');
   const summaryFood = document.getElementById('summary-food');
   const summaryDatetime = document.getElementById('summary-datetime');
+  const summaryMeeting = document.getElementById('summary-meeting');
   const summaryNotesRow = document.getElementById('summary-notes-row');
   const summaryNotes = document.getElementById('summary-notes');
 
@@ -97,10 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
     summaryActivity.textContent = plan.activity || '—';
     summaryFood.textContent = plan.food || '—';
     summaryDatetime.textContent = plan.datetime || '—';
+    if (summaryMeeting) summaryMeeting.textContent = plan.meeting || 'Заеду за тобой на такси / машине';
     summaryNotesRow.style.display = 'flex';
     summaryNotes.innerHTML = 'Твой член <video class="inline-emoji-video" src="fuck.webm" autoplay loop muted playsinline></video>';
 
-    setupCalendarDownload(plan.rawDate, plan.selectedTime, plan.activity, plan.food);
+    setupCalendarDownload(plan.rawDate, plan.selectedTime, plan.activity, plan.food, plan.meeting);
 
     screenInvite.style.display = 'none';
     screenInvite.classList.remove('active');
@@ -342,8 +347,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setWizardStep(stepNumber) {
-    [wizardStep1, wizardStep2, wizardStep3].forEach((step, idx) => {
-      step.classList.toggle('active', idx + 1 === stepNumber);
+    [wizardStep1, wizardStep2, wizardStep3, wizardStep4].forEach((step, idx) => {
+      if (step) step.classList.toggle('active', idx + 1 === stepNumber);
     });
 
     stepDots.forEach((dot, idx) => {
@@ -388,6 +393,14 @@ document.addEventListener('DOMContentLoaded', () => {
       setWizardStep(2);
     }
   });
+
+  if (btnNext3) {
+    btnNext3.addEventListener('click', () => setWizardStep(4));
+  }
+
+  if (btnPrev4) {
+    btnPrev4.addEventListener('click', () => setWizardStep(3));
+  }
 
   // ==========================================
   // 6. QUICK DAYS GENERATOR
@@ -459,6 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
       selectedFood = document.querySelector('input[name="food"]:checked')?.value || 'Итальянская кухня';
     }
     
+    const selectedMeeting = document.querySelector('input[name="meeting"]:checked')?.value || 'Заеду за тобой на такси / машине';
     const selectedTime = timeInput.value ? timeInput.value : '19:00';
     const rawDate = dateInput.value;
     const notesInput = document.getElementById('notes-input');
@@ -497,6 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
     summaryActivity.textContent = selectedActivity;
     summaryFood.textContent = selectedFood;
     summaryDatetime.textContent = fullDateTime;
+    if (summaryMeeting) summaryMeeting.textContent = selectedMeeting;
 
     summaryNotesRow.style.display = 'flex';
     summaryNotes.innerHTML = 'Твой член <video class="inline-emoji-video" src="fuck.webm" autoplay loop muted playsinline></video>';
@@ -521,6 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ✨ *Активность:* ${selectedActivity}
 🍓 *Вкусняшки:* ${selectedFood}
 🗓️ *Когда:* ${fullDateTime}
+📍 *Где встретимся:* ${selectedMeeting}
 💭 *Пожелание:* ${notes ? notes : 'Не указано'}
 
 💖 _Официально подтверждено через date-site!_`;
@@ -532,6 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
       datetime: fullDateTime,
       rawDate: rawDate,
       selectedTime: selectedTime,
+      meeting: selectedMeeting,
       notes: notes,
       botToken: config.botToken,
       chatId: config.chatId
@@ -556,7 +573,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('date_kristina_confirmed', JSON.stringify(savedPlan));
 
     // Calendar (.ics)
-    setupCalendarDownload(rawDate, selectedTime, selectedActivity, selectedFood);
+    setupCalendarDownload(rawDate, selectedTime, selectedActivity, selectedFood, selectedMeeting);
 
     // Display confirmation status
     if (savedOnServer) {
@@ -636,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // 10. ICS CALENDAR EVENT GENERATOR
   // ==========================================
-  function setupCalendarDownload(rawDate, timeStr, activity, food) {
+  function setupCalendarDownload(rawDate, timeStr, activity, food, meeting) {
     if (!btnAddCalendar) return;
     btnAddCalendar.onclick = () => {
       let dtStart = new Date();
@@ -658,6 +675,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
       };
 
+      const meetingInfo = meeting ? `\\nВстреча: ${meeting}` : '';
+
       const icsContent = [
         'BEGIN:VCALENDAR',
         'VERSION:2.0',
@@ -665,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'CALSCALE:GREGORIAN',
         'BEGIN:VEVENT',
         `SUMMARY:💜 Свидание с Кристиной: ${activity}`,
-        `DESCRIPTION:Идеальный вечер! План: ${activity}. Вкусняшки: ${food}.`,
+        `DESCRIPTION:Идеальный вечер! План: ${activity}. Вкусняшки: ${food}.${meetingInfo}`,
         `DTSTART:${formatICSDate(dtStart)}`,
         `DTEND:${formatICSDate(dtEnd)}`,
         'STATUS:CONFIRMED',
